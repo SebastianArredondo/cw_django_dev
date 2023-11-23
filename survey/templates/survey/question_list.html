@@ -1,59 +1,62 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h1>Preguntas</h1>
-    <div class="d-flex flex-column">
-        {% for question in object_list %}
-            <div class="card w-100 my-2 p-3">
-                <div class="d-flex flex-row">
-                    <div class="col-10">
-                        <i class="far fa-question-circle" title="{{ question.description }}"></i>
-                        <span class="fw-bold">{{ question.title }}</span>
-                    </div>
-                    <div class="col-2">
-                        <span class="fw-lighter">Autor:</span> {{ question.author }}
-                    </div>
-                </div>
-                <br>
-                <div class="d-flex justify-content-between">
-                    <div class="d-flex flex-column col-4">
-                        <u class="fw-lighter mb-1">Respuesta</u>
-                        <div>
-                            {% for val in '12345' %}
-                                <a class="mx-1 answer {% if question.current_user_answer and question.current_user_answer|slugify >= val %}fas{% else %}fal{% endif %} fa-star text-decoration-none"
-                                   data-question="{{ question.pk }}"
-                                   data-value="{{ val }}" href="{% url 'survey:question-answer' question_id=question.pk %}?value={{ val }}"></a>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    <div class="col-4 d-flex flex-column ">
-                        <u class="fw-lighter mb-1">Evalúa la pregunta</u>
-                        <div>
-                            <a class="mx-1 like {% if question.current_user_vote %}fas{% else %}fal{% endif %} fa-thumbs-up text-decoration-none"
-                               href="{% url 'survey:question-like' question_id=question.pk like=1 %}" data-question="{{ question.pk }}" data-value="like" ></a>
-                            <a class="mx-1 like {% if question.current_user_vote == False %}fas{% else %}fal{% endif %} fa-thumbs-up fa-flip-both text-decoration-none"
-                               href="{% url 'survey:question-like' question_id=question.pk like=0 %}" data-question="{{ question.pk }}" data-value="dislike"></a>
-                        </div>
-                    </div>
-                    <div class="col-2">
-                        <u class="fw-lighter mb-1">Ranking:</u>
-                        <div>
-                           {{ question.ranking }} pts.
-                        </div>
-
-
-                    </div>
+<h1>Preguntas</h1>
+<div class="d-flex flex-column">
+    {% for question in object_list %}
+    <div class="card w-100 my-2 p-3">
+        <div class="d-flex flex-row">
+            <div class="col-10">
+                <i class="far fa-question-circle" title="{{ question.description }}"></i>
+                <span class="fw-bold">{{ question.title }}</span>
+            </div>
+            <div class="col-2">
+                <span class="fw-lighter">Autor:</span> {{ question.author }}
+            </div>
+        </div>
+        <br>
+        <div class="d-flex justify-content-between">
+            <div class="d-flex flex-column col-4">
+                <u class="fw-lighter mb-1">Respuesta</u>
+                <div>
+                    {% for val in '12345' %}
+                    <a class="mx-1 answer {% if question.current_user_answer and question.current_user_answer|slugify >= val %}fas{% else %}fal{% endif %} fa-star text-decoration-none"
+                       data-question="{{ question.pk }}"
+                       data-value="{{ val }}"
+                       href="{% url 'survey:question-answer' question_id=question.pk %}?value={{ val }}"></a>
+                    {% endfor %}
                 </div>
             </div>
-        {% empty %}
-            <div>No hay preguntas.</div>
-        {% endfor %}
+            <div class="col-4 d-flex flex-column ">
+                <u class="fw-lighter mb-1">Evalúa la pregunta</u>
+                <div>
+                    <a class="mx-1 like {% if question.current_user_vote %}fas{% else %}fal{% endif %} fa-thumbs-up text-decoration-none"
+                       href="{% url 'survey:question-like' question_id=question.pk like=1 %}"
+                       data-question="{{ question.pk }}" data-value="like"></a>
+                    <a class="mx-1 like {% if question.current_user_vote == False %}fas{% else %}fal{% endif %} fa-thumbs-up fa-flip-both text-decoration-none"
+                       href="{% url 'survey:question-like' question_id=question.pk like=0 %}"
+                       data-question="{{ question.pk }}" data-value="dislike"></a>
+                </div>
+            </div>
+            <div class="col-2">
+                <u class="fw-lighter mb-1">Ranking:</u>
+                <div>
+                    {{ question.ranking }} pts.
+                </div>
+
+
+            </div>
+        </div>
     </div>
+    {% empty %}
+    <div>No hay preguntas.</div>
+    {% endfor %}
+</div>
 {% endblock %}
 
 {% block js %}
-    <script>
+<script>
 
 
-    </script>
+</script>
 
 {% endblock %}

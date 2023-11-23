@@ -13,5 +13,4 @@ urlpatterns = [
     path('question/<int:question_id>/answer', AnswerFormView.as_view(), name='question-answer'),
     path('question/<int:question_id>/like/<int:like>', vote_question, name='question-like'),
 
-
 ]

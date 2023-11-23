@@ -1,5 +1,5 @@
-from django.db import models
 from django.contrib.auth import get_user_model
+from django.db import models
 from django.urls import reverse
 
 
@@ -31,8 +31,10 @@ class Answer(models.Model):
 
 
 class Vote(models.Model):
-    question = models.ForeignKey(Question, related_name="question_votes", verbose_name='Pregunta', on_delete=models.CASCADE)
-    author = models.ForeignKey(get_user_model(), related_name="author_votes", verbose_name='Autor', on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, related_name="question_votes", verbose_name='Pregunta',
+                                 on_delete=models.CASCADE)
+    author = models.ForeignKey(get_user_model(), related_name="author_votes", verbose_name='Autor',
+                               on_delete=models.CASCADE)
     like = models.BooleanField(default=True)
 
     class Meta:

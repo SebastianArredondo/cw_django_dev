@@ -1,15 +1,18 @@
-from django.test import TestCase
 from datetime import date, timedelta
+
 from django.contrib.auth.models import User
-from survey.models import Question, Answer, Vote
+from django.test import TestCase
+
 from survey.business_logic.QuestionRanking import QuestionRankingCalculator
+from survey.models import Question, Answer, Vote
 
 
 class TestQuestionRankingCalculator(TestCase):
     def setUp(self):
         self.user = User.objects.create_user("sebastian", "fake@fake.com", "fakepassword")
         self.question = Question.objects.create(title="fake title", description="fake description", author=self.user)
-        self.another_question = Question.objects.create(title="another fake title", description="another fake description", author=self.user)
+        self.another_question = Question.objects.create(title="another fake title",
+                                                        description="another fake description", author=self.user)
         self.calculator = QuestionRankingCalculator(queryset=Question.objects.filter(pk=self.question.pk))
 
     def test_get_question_with_ranking_created_today(self):
@@ -41,5 +44,3 @@ class TestQuestionRankingCalculator(TestCase):
         self.question.save()
 
         self.assertEqual(self.calculator.get_question_with_ranking().first().ranking, 0)
-
-

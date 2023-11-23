@@ -1,5 +1,7 @@
 from datetime import date
+
 from django.db.models import Case, Value, When, Count, Q
+
 from survey.models import Question
 
 
@@ -14,13 +16,14 @@ class QuestionRankingCalculator:
 
     def get_question_with_ranking(self) -> Question:
         queryset = self.queryset.annotate(ranking=(
-            Case(
-                When(created=date.today(), then=Value(self.TODAY_VALUE)),
-                default=Value(0),
-            ) +
-            Count("answers") * self.ANSWER_VALUE +
-            Count("question_votes", filter=Q(question_votes__like=True)) * self.LIKE_VALUE) +
-            Count("question_votes", filter=Q(question_votes__like=False)) * self.DISLIKE_VALUE
-        )
+                                                          Case(
+                                                              When(created=date.today(), then=Value(self.TODAY_VALUE)),
+                                                              default=Value(0),
+                                                          ) +
+                                                          Count("answers") * self.ANSWER_VALUE +
+                                                          Count("question_votes", filter=Q(
+                                                              question_votes__like=True)) * self.LIKE_VALUE) +
+                                                  Count("question_votes",
+                                                        filter=Q(question_votes__like=False)) * self.DISLIKE_VALUE
+                                          )
         return queryset
-
